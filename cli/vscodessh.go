@@ -137,6 +137,7 @@ func (r *RootCmd) vscodeSSH() *serpent.Command {
 				Fetch:     client.WorkspaceAgent,
 				FetchLogs: client.WorkspaceAgentLogsAfter,
 				Wait:      wait,
+				DocsURL:   docsURL(ctx, client),
 			})
 			if err != nil {
 				if xerrors.Is(err, context.Canceled) {

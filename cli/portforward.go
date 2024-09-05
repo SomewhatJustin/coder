@@ -88,8 +88,9 @@ func (r *RootCmd) portForward() *serpent.Command {
 			}
 
 			err = cliui.Agent(ctx, inv.Stderr, workspaceAgent.ID, cliui.AgentOptions{
-				Fetch: client.WorkspaceAgent,
-				Wait:  false,
+				Fetch:   client.WorkspaceAgent,
+				Wait:    false,
+				DocsURL: docsURL(ctx, client),
 			})
 			if err != nil {
 				return xerrors.Errorf("await agent: %w", err)

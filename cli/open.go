@@ -79,6 +79,7 @@ func (r *RootCmd) openVSCode() *serpent.Command {
 					Fetch:     client.WorkspaceAgent,
 					FetchLogs: nil,
 					Wait:      false,
+					DocsURL:   docsURL(ctx, client),
 				})
 				if err != nil {
 					if xerrors.Is(err, context.Canceled) {

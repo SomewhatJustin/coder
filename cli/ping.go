@@ -67,8 +67,8 @@ func (r *RootCmd) ping() *serpent.Command {
 			if !r.disableNetworkTelemetry {
 				opts.EnableTelemetry = true
 			}
-			client := workspacesdk.New(client)
-			conn, err := client.DialAgent(ctx, workspaceAgent.ID, opts)
+			wsClient := workspacesdk.New(client)
+			conn, err := wsClient.DialAgent(ctx, workspaceAgent.ID, opts)
 			if err != nil {
 				return err
 			}
@@ -155,10 +155,11 @@ func (r *RootCmd) ping() *serpent.Command {
 
 			ni := conn.GetNetInfo()
 			connDiags := cliui.ConnDiags{
-				PingP2P:       didP2p,
-				DisableDirect: r.disableDirect,
-				LocalNetInfo:  ni,
-				Verbose:       r.verbose,
+				PingP2P:            didP2p,
+				DisableDirect:      r.disableDirect,
+				LocalNetInfo:       ni,
+				Verbose:            r.verbose,
+				TroubleshootingURL: docsURL(diagCtx, client) + "/networking/troubleshooting",
 			}
 
 			awsRanges, err := cliutil.FetchAWSIPRanges(diagCtx, cliutil.AWSIPRangesURL)
@@ -168,7 +169,7 @@ func (r *RootCmd) ping() *serpent.Command {
 
 			connDiags.ClientIPIsAWS = isAWSIP(awsRanges, ni)
 
-			connInfo, err := client.AgentConnectionInfoGeneric(diagCtx)
+			connInfo, err := wsClient.AgentConnectionInfoGeneric(diagCtx)
 			if err != nil || connInfo.DERPMap == nil {
 				return xerrors.Errorf("Failed to retrieve connection info from server: %w\n", err)
 			}

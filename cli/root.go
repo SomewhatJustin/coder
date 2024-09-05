@@ -687,6 +687,14 @@ func namedWorkspace(ctx context.Context, client *codersdk.Client, identifier str
 	return client.WorkspaceByOwnerAndName(ctx, owner, name, codersdk.WorkspaceOptions{})
 }
 
+func docsURL(ctx context.Context, client *codersdk.Client) string {
+	deploymentConfig, err := client.DeploymentConfig(ctx)
+	if err == nil {
+		return deploymentConfig.Values.DocsURL.String()
+	}
+	return "https://docs.coder.com"
+}
+
 // createConfig consumes the global configuration flag to produce a config root.
 func (r *RootCmd) createConfig() config.Root {
 	return config.Root(r.globalConfig)
